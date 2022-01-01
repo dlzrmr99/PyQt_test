@@ -1,15 +1,53 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+"""
+ZetCode PyQt5 tutorial
+
+This example shows a tooltip on
+a window and a button.
+
+author: Jan Bodnar
+website: zetcode.com
+last edited: January 2015
+"""
+
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget
+from PyQt5.QtWidgets import QWidget, QDesktopWidget, QApplication, QMessageBox
+
+
+class Example(QWidget):
+
+    def __init__(self):
+        super().__init__()
+
+        self.initUI()
+
+    def initUI(self):
+        self.resize(250, 150)
+        self.center()
+
+        self.setWindowTitle('Center')
+        self.show()
+
+    def closeEvent(self, event):
+        reply = QMessageBox.question(self, 'Message',
+                                     "Are you sure to quit?", QMessageBox.Yes |
+                                     QMessageBox.No, QMessageBox.No)
+
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
 
 if __name__ == '__main__':
-
     app = QApplication(sys.argv)
-
-    w = QWidget()
-    w.resize(500, 650)
-    w.move(600, 600)
-    w.setWindowTitle('Simple')
-    w.show()
-
+    ex = Example()
     sys.exit(app.exec_())
